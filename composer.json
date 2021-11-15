@@ -1,0 +1,31 @@
+{
+    "name": "tphp/tphp",
+    "description": "TPHP Framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "TPHP",
+            "email": "336296@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "laravel/framework": ">=5.6"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tphp\\TphpServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ],
+        "files": [
+            "src/helpers.php"
+        ]
+    }
+}
+
