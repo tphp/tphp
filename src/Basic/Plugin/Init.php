@@ -177,11 +177,15 @@ class Init
     public static function getStatic($url = null, $isDomain = true, $type = 'static', $topDir = '')
     {
         $pluginsDir = "/static/plugins/";
-        if ($isDomain) {
-            $urlPath = url('');
-        } else {
-            $urlPath = "@";
+
+        $urlPath = "";
+        if (is_string($isDomain)) {
+            $urlPath = trim($isDomain);
+            $urlPath = rtrim($isDomain, "\\/");
+        } else if (is_bool($isDomain) && $isDomain) {
+            $urlPath = TplHandle::getUrl('');
         }
+
         $topDir = trim(trim($topDir), "\\/");
         if (empty($topDir)) {
             $topDir = '';

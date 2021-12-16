@@ -457,7 +457,24 @@ trait LoadStatic
      */
     public static function loadStatic()
     {
-        $static = [];
+        $static = get_ob_start_value('static');
+        if (empty($static)) {
+            $static = [];
+        }
+
+        $tpl = \Tphp\Config::$tpl;
+        if (!empty($tpl)) {
+            // 必须先运行获取配置
+            $css = $tpl->getCss();
+            $js = $tpl->getJs();
+
+            if (!empty($css)) {
+                $static['css_md5'] = $css;
+            }
+            if (!empty($js)) {
+                $static['js_md5'] = $js;
+            }
+        }
         if (!empty(Init::$css)) {
             $static['css'] = Init::$css;
         }

@@ -207,6 +207,43 @@ trait Commands
     }
 
     /**
+     * 获取URL
+     * @param null $url
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    public static function getUrl($url = null)
+    {
+        if (is_null($url)) {
+            return url();
+        }
+
+        $isDomain = \Tphp\Config::$domain['isdomain'];
+        if (is_bool($isDomain)) {
+            if ($isDomain) {
+                return url($url);
+            }
+            return $url;
+        }
+
+        if (!is_string($url)) {
+            return url($url);
+        }
+
+        $isDomain = trim($isDomain);
+        $isDomain = rtrim($isDomain, "\\/");
+        if (empty($url) || !is_string($url)) {
+            return $isDomain;
+        }
+
+        if (strpos($url, "://") !== false) {
+            return $url;
+        }
+
+        $url = ltrim($url, "\\/");
+        return "{$isDomain}/{$url}";
+    }
+
+    /**
      * 判断是否是外部链接
      * @param $url
      * @return bool

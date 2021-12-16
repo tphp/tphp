@@ -101,7 +101,7 @@ class DomainsController extends Controller
             $css = [];
         }
         if (!empty($dfs['css_cache'])) {
-            $css[] = url('/static/tpl/css/' . $dfs['css_cache'] . '.css');
+            $css[] = TplHandle::getUrl('/static/tpl/css/' . $dfs['css_cache'] . '.css');
         }
 
         $js = $dfs['js'];
@@ -109,7 +109,7 @@ class DomainsController extends Controller
             $js = [];
         }
         if (!empty($dfs['js_cache'])) {
-            $js[] = url('/static/tpl/js/' . $dfs['js_cache'] . '.js');
+            $js[] = TplHandle::getUrl('/static/tpl/js/' . $dfs['js_cache'] . '.js');
         }
         $htmlLower = strtolower($html);
         $htmlLength = strlen($htmlLower);
@@ -379,26 +379,8 @@ EOF;
                 $retRp->withCookie(Cookie::forget($val));
             }
         }
-        $obj = $this->obj;
-        if ($this->isRebuildHtml && !empty($obj)) {
-            // 必须先运行获取配置
-            $css = $obj->getCss();
-            $js = $obj->getJs();
-
-            // 再根据配置进行设置CSS或JS
-            $dfs = get_ob_start_value('static');
-            if (empty($dfs)) {
-                $dfs = [];
-            }
-            if (!empty($css)) {
-                $dfs['css_md5'] = $css;
-            }
-            if (!empty($js)) {
-                $dfs['js_md5'] = $js;
-            }
-            if (!empty($dfs)) {
-                set_ob_start_value($dfs, 'static', true);
-            }
+        if ($this->isRebuildHtml) {
+            TplHandle::loadStatic();
         }
         TplInit::runMethodAuto($this->tplType, '', $this->obj);
         self::runObStart();
@@ -913,7 +895,7 @@ EOF
         if (empty($statics)) {
             return [$csss, $jss];
         }
-        $_url = url('');
+        $_url = TplHandle::getUrl('');
         foreach ($statics as $key => $val) {
             $basePath = "{$_url}/static/plugins/{$key}";
             foreach ($val as $k => $v) {
@@ -927,7 +909,7 @@ EOF
                 }
                 $k = ltrim($k, "#@");
                 if ($k[0] === '/') {
-                    $url = url($k);
+                    $url = TplHandle::getUrl($k);
                     $isContinue = true;
                 } elseif (strrpos($k, "://") !== false) {
                     $url = $k;

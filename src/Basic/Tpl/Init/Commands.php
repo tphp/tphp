@@ -11,6 +11,7 @@
 namespace Tphp\Basic\Tpl\Init;
 
 use Tphp\Basic\Tpl\Data as TplData;
+use Tphp\Basic\Tpl\Handle as TplHandle;
 use Tphp\Register;
 use Tphp\Config as TphpConfig;
 
@@ -880,7 +881,7 @@ trait Commands
         !empty($argsUrl) && $retUrl = $argsUrl . "/" . $retUrl;
         $retUrl = "/{$retUrl}";
         if ($isDomain) {
-            return url($retUrl);
+            return TplHandle::getUrl($retUrl);
         }
         return $retUrl;
     }

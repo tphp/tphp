@@ -17,6 +17,7 @@ namespace Tphp\Basic\Plugin;
 use PhpParser\ParserFactory;
 use Tphp\Basic\Tpl\Init as TplInit;
 use Tphp\Basic\Tpl\Run as TplRun;
+use Tphp\Basic\Tpl\Handle as TplHandle;
 use Tphp\Register;
 use Tphp\Config as TphpConfig;
 
@@ -771,7 +772,7 @@ class PluginClass
     {
         $dir = ltrim(trim($dir), "\\/");
         $staticUrl = $this->staticUrl . $this->getDir() . "/" . $dir;
-        $isDomain && $staticUrl = url($staticUrl);
+        $isDomain && $staticUrl = TplHandle::getUrl($staticUrl);
         return $staticUrl;
     }
 
