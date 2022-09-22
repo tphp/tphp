@@ -510,6 +510,9 @@ class Init
     public function getWhere($where, $fieldAll)
     {
         if (empty($where)) return [1, $where];
+        if (!is_array($where)) {
+            return [1, null];
+        }
         if (is_string($where[0])) $where = [$where];
         $flag = 0;
         $childI = 0;
@@ -826,7 +829,6 @@ class Init
             $db = DB::connection($conn)->table($table);
             !empty($where) && $this->setWhereMod($db, $where);
             !empty($whereAdd) && $this->setWhereMod($db, $whereAdd);
-
             list($status, $search) = $this->getWhere($data['search'], $fieldAll);
             if ($status && !empty($search)) {
                 $this->setWhereMod($db, $search);
