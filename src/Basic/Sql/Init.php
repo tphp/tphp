@@ -829,9 +829,13 @@ class Init
             $db = DB::connection($conn)->table($table);
             !empty($where) && $this->setWhereMod($db, $where);
             !empty($whereAdd) && $this->setWhereMod($db, $whereAdd);
-            list($status, $search) = $this->getWhere($data['search'], $fieldAll);
-            if ($status && !empty($search)) {
-                $this->setWhereMod($db, $search);
+            if (!empty($data['search']) && !is_array($data['search'])) {
+                return [1, null];
+            } else {
+                list($status, $search) = $this->getWhere($data['search'], $fieldAll);
+                if ($status && !empty($search)) {
+                    $this->setWhereMod($db, $search);
+                }
             }
 
             $cData = [];
