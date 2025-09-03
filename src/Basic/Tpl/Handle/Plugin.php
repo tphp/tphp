@@ -980,20 +980,11 @@ trait Plugin
                     'gif' => 'gif',
                     'png' => 'png'
                 ];
-                switch ($finfoType) {
-                    case 'image/gif' :
-                        $img = \imagecreatefromgif($tmp_name);
-                        break;
-                    case 'image/jpeg':
-                        $img = \imagecreatefromjpeg($tmp_name);
-                        break;
-                    case 'image/png':
-                        $img = \imagecreatefrompng($tmp_name);
-                        break;
-                    default :
-                        EXITJSON(0, '未知类型文件');
+                if (strpos(trim($finfoType), "image/") === 0) {
+                    $img = \imagecreatefromstring(file_get_contents($tmp_name));
+                } else {
+                    EXITJSON(0, '未知类型文件');
                 }
-
                 $func = "\image". $types[$ext];
                 $func($img, $tmp_name);
             }
